@@ -4,14 +4,50 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e1d399f8-0cff-4403-a138-c92eaa1ceca5" name="Changes" comment="" />
+    <list default="true" id="e1d399f8-0cff-4403-a138-c92eaa1ceca5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/ClientHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/RpcReference.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/RpcDecoder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/RpcEncoder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/RpcInvocation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/RpcProtocol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonClientCache.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonServerCache.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ClientConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ServerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/constants/RpcConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/proxy/ProxyFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/proxy/jdk/JDKClientInvocationHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/proxy/jdk/JDKProxyFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/DataServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/ServerHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-interface/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-interface/src/main/java/org/example/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-interface/src/main/java/org/example/irpc/framework/interfaces/DataService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
@@ -32,6 +68,15 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "aspect.path.notification.shown": "true",
+    "jdk.selected.JAVA_MODULE": "1.8",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -43,8 +88,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1680853657215</updated>
-      <workItem from="1680853658515" duration="2000" />
+      <workItem from="1680853658515" duration="2723000" />
+      <workItem from="1681308008537" duration="6135000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
