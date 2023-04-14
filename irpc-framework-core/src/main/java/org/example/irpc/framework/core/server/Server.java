@@ -66,12 +66,12 @@ public class Server {
         PROVIDER_CLASS_MAP.put(interfaceClass.getName(), serviceBean);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Server server = new Server();
         ServerConfig serverConfig = new ServerConfig();
         serverConfig.setPort(9090);
         server.setServerConfig(serverConfig);
         server.registyService(new DataServiceImpl());
-
+        server.startApplication();
     }
 }
