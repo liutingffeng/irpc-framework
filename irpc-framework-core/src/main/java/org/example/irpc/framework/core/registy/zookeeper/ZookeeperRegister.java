@@ -1,6 +1,9 @@
 package org.example.irpc.framework.core.registy.zookeeper;
 
 import org.apache.zookeeper.WatchedEvent;
+import org.example.irpc.framework.core.common.event.IRpcEvent;
+import org.example.irpc.framework.core.common.event.IRpcListenerLoader;
+import org.example.irpc.framework.core.common.event.IRpcUpdateEvent;
 import org.example.irpc.framework.core.common.event.data.URLChangeWrapper;
 import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
@@ -77,8 +80,8 @@ public class ZookeeperRegister extends AbstractRegister {
             urlChangeWrapper.setProviderUrl(childrenDataList);
             urlChangeWrapper.setServiceName(path.split("/")[2]);
             //自定义的一套事件监听组件
-
-
+            IRpcEvent iRpcEvent = new IRpcUpdateEvent(urlChangeWrapper);
+            IRpcListenerLoader.sendEvent(iRpcEvent);
             //收到回调之后在注册一次监听，这样能保证一直都收到消息
             watchChildNodeData(path);
         });

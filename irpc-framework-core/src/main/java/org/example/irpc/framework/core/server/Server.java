@@ -9,9 +9,14 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.example.irpc.framework.core.common.RpcDecoder;
 import org.example.irpc.framework.core.common.RpcEncoder;
+import org.example.irpc.framework.core.common.config.PropertiesBootstrap;
 import org.example.irpc.framework.core.common.config.ServerConfig;
+import org.example.irpc.framework.core.registy.RegistryService;
+import org.example.irpc.framework.core.registy.URL;
+import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
 
 import static org.example.irpc.framework.core.common.cache.CommonServerCache.PROVIDER_CLASS_MAP;
+import static org.example.irpc.framework.core.common.cache.CommonServerCache.PROVIDER_URL_SET;
 
 public class Server {
 
@@ -20,6 +25,8 @@ public class Server {
     private static EventLoopGroup workerGroup = null;
 
     private ServerConfig serverConfig;
+
+    private RegistryService registryService;
 
     public ServerConfig getServerConfig() {
         return serverConfig;
@@ -50,10 +57,21 @@ public class Server {
                 socketChannel.pipeline().addLast(new ServerHandler());
             }
         });
-        bootstrap.bind(serverConfig.getPort()).sync();
+        this.batchExportUrl();
+        bootstrap.bind(serverConfig.getServerPort()).sync();
     }
 
-    public void registyService(Object serviceBean){
+    public void initServerConfig() {
+        ServerConfig serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
+        this.setServerConfig(serverConfig);
+    }
+
+    /**
+     * 暴露服务信息
+     *
+     * @param serviceBean
+     */
+    public void exportService(Object serviceBean) {
         if (serviceBean.getClass().getInterfaces().length == 0) {
             throw new RuntimeException("service must had interfaces!");
         }
@@ -61,17 +79,41 @@ public class Server {
         if (classes.length > 1) {
             throw new RuntimeException("service must only had one interfaces!");
         }
+        if (registryService == null) {
+            registryService = new ZookeeperRegister(serverConfig.getRegisterAddr());
+        }
         Class interfaceClass = classes[0];
         //需要注册的对象统一放在一个MAP集合中进行管理
         PROVIDER_CLASS_MAP.put(interfaceClass.getName(), serviceBean);
+        URL url = new URL();
+        url.setServiceName(interfaceClass.getName());
+        url.setApplicationName(serverConfig.getApplicationName());
+        url.addParameter("host", serverConfig.getRegisterAddr());
+        url.addParameter("port", String.valueOf(serverConfig.getServerPort()));
+        PROVIDER_URL_SET.add(url);
+    }
+
+    /**
+     * 这个函数的内部设计就是为了将服务端的具体服务都暴露到注册中心，方便客户端进行调用。
+     */
+    public void batchExportUrl(){
+        Thread task = new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            for (URL url : PROVIDER_URL_SET) {
+                registryService.register(url);
+            }
+        });
+        task.start();
     }
 
     public static void main(String[] args) throws InterruptedException {
         Server server = new Server();
-        ServerConfig serverConfig = new ServerConfig();
-        serverConfig.setPort(9090);
-        server.setServerConfig(serverConfig);
-        server.registyService(new DataServiceImpl());
+        server.initServerConfig();
+        server.exportService(new DataServiceImpl());
         server.startApplication();
     }
 }

@@ -5,20 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e1d399f8-0cff-4403-a138-c92eaa1ceca5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/data/URLChangeWrapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/RegistryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/URL.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/AbstractRegister.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/AbstractZookeeperClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/CuratorZookeeperClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ProviderNodeInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ZookeeperRegister.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/ConnectionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/ChannelFutureWrapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesBootstrap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListenerLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcUpdateEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/listener/ServiceUpdateListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/utils/CommonUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonClientCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonClientCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonServerCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonServerCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ServerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ZookeeperRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ZookeeperRegister.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,8 +30,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -115,7 +116,8 @@
       <updated>1680853657215</updated>
       <workItem from="1680853658515" duration="2723000" />
       <workItem from="1681308008537" duration="6186000" />
-      <workItem from="1681393492333" duration="5066000" />
+      <workItem from="1681393492333" duration="5264000" />
+      <workItem from="1681463321057" duration="8395000" />
     </task>
     <servers />
   </component>
