@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e1d399f8-0cff-4403-a138-c92eaa1ceca5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/irpc.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/ConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/ConnectionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/listener/ServiceUpdateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/listener/ServiceUpdateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/utils/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/utils/CommonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/proxy/jdk/JDKClientInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/proxy/jdk/JDKClientInvocationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/CuratorZookeeperClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/CuratorZookeeperClient.java" afterDir="false" />
-    </list>
+    <list default="true" id="e1d399f8-0cff-4403-a138-c92eaa1ceca5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,7 +100,7 @@
       <workItem from="1680853658515" duration="2723000" />
       <workItem from="1681308008537" duration="6186000" />
       <workItem from="1681393492333" duration="5264000" />
-      <workItem from="1681463321057" duration="18648000" />
+      <workItem from="1681463321057" duration="19201000" />
     </task>
     <servers />
   </component>
