@@ -36,6 +36,7 @@ public class JDKClientInvocationHandler implements InvocationHandler {
                 return ((RpcInvocation)object).getResponse();
             }
         }
-        throw new TimeoutException("client wait server's response timeout!");
+//        throw new TimeoutException("client wait server's response timeout!");
+        return null;
     }
 }

@@ -53,7 +53,7 @@ public class CommonUtils {
             InetAddress ip = null;
             while (allNetInterfaces.hasMoreElements()) {
                 NetworkInterface netInterface = allNetInterfaces.nextElement();
-                if (netInterface.isLoopback() || netInterface.isVirtual() || netInterface.isUp()) {
+                if (netInterface.isLoopback() || netInterface.isVirtual() || !netInterface.isUp()) {
                     continue;
                 }
                 Enumeration<InetAddress> addresses = netInterface.getInetAddresses();

@@ -43,7 +43,7 @@ public class ConnectionHandler {
         }
         String[] providerAddress = providerIp.split(":");
         String ip = providerAddress[0];
-        Integer port = Integer.valueOf(providerAddress[1]);
+        Integer port = Integer.valueOf(providerAddress[2]);
         //到底这个channelFuture里面是什么
         ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
         ChannelFutureWrapper channelFutureWrapper = new ChannelFutureWrapper();

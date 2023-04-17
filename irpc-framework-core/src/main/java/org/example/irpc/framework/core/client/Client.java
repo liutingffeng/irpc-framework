@@ -118,7 +118,7 @@ public class Client {
             URL url = new URL();
             url.setServiceName(providerServiceName);
             // 客户端在此新增一个订阅的功能
-            abstractRegister.register(url);
+            abstractRegister.doAfterSubscribe(url);
         }
     }
 

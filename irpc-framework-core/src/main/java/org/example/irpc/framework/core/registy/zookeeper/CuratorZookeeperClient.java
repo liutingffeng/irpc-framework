@@ -9,6 +9,7 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.data.Stat;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -100,7 +101,16 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient{
     @Override
     public void createTemporaryData(String address, String data) {
         try {
-            client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(address, data.getBytes());
+            String createdPath = client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(address, data.getBytes());
+            if (address.equals(createdPath)) {
+                System.out.println("节点创建成功" + createdPath);
+                Stat stat = new Stat();
+                byte[] bytes = client.getData().storingStatIn(stat).forPath(createdPath);
+                String nodeData = new String(bytes, StandardCharsets.UTF_8);
+                System.out.println("节点信息: " + nodeData);
+            } else {
+                System.out.println("节点创建失败");
+            }
         } catch (KeeperException.NoChildrenForEphemeralsException e) {
             try {
                 client.setData().forPath(address, data.getBytes());

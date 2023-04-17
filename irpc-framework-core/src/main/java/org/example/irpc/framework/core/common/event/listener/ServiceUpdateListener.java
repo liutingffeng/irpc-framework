@@ -3,6 +3,7 @@ package org.example.irpc.framework.core.common.event.listener;
 import io.netty.channel.ChannelFuture;
 import org.example.irpc.framework.core.client.ConnectionHandler;
 import org.example.irpc.framework.core.common.ChannelFutureWrapper;
+import org.example.irpc.framework.core.common.event.IRpcEvent;
 import org.example.irpc.framework.core.common.event.IRpcListener;
 import org.example.irpc.framework.core.common.event.IRpcUpdateEvent;
 import org.example.irpc.framework.core.common.event.data.URLChangeWrapper;
@@ -20,9 +21,9 @@ import static org.example.irpc.framework.core.common.cache.CommonClientCache.CON
 public class ServiceUpdateListener implements IRpcListener<IRpcUpdateEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceUpdateListener.class);
     @Override
-    public void callBack(Object t) {
+    public void callBack(IRpcUpdateEvent t) {
         //获取到字节点的数据信息
-        URLChangeWrapper urlChangeWrapper = (URLChangeWrapper) t;
+        URLChangeWrapper urlChangeWrapper = (URLChangeWrapper) t.getData();
         List<ChannelFutureWrapper> channelFutureWrappers = CONNECT_MAP.get(urlChangeWrapper.getServiceName());
         if (CommonUtils.isEmptyList(channelFutureWrappers)) {
             LOGGER.error("[ServiceUpdateListener] channelFutureWrappers is empty");
@@ -48,7 +49,7 @@ public class ServiceUpdateListener implements IRpcListener<IRpcUpdateEvent> {
                 if (!finalUrl.contains(newProviderUrl)) {
                     ChannelFutureWrapper channelFutureWrapper = new ChannelFutureWrapper();
                     String host = newProviderUrl.split(":")[0];
-                    Integer port = Integer.valueOf(newProviderUrl.split(":")[1]);
+                    Integer port = Integer.valueOf(newProviderUrl.split(":")[2]);
                     channelFutureWrapper.setHost(host);
                     channelFutureWrapper.setPort(port);
                     ChannelFuture channelFuture = null;
