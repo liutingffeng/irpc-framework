@@ -1,5 +1,7 @@
 package org.example.irpc.framework.core.common.event;
 
+import org.example.irpc.framework.core.common.event.listener.ProviderNodeDataChangeListener;
+import org.example.irpc.framework.core.common.event.listener.ServiceDestroyListener;
 import org.example.irpc.framework.core.common.event.listener.ServiceUpdateListener;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
 
@@ -22,6 +24,8 @@ public class IRpcListenerLoader {
 
     public void init() {
         registerListener(new ServiceUpdateListener());
+        registerListener(new ServiceDestroyListener());
+        registerListener(new ProviderNodeDataChangeListener());
     }
 
     /**
@@ -37,6 +41,28 @@ public class IRpcListenerLoader {
             return (Class<?>) type;
         }
         return null;
+    }
+
+    /**
+     * 同步事件处理，可能会堵塞
+     *
+     * @param iRpcEvent
+     */
+    public static void sendSyncEvent(IRpcEvent iRpcEvent) {
+        System.out.println(iRpcListenerList);
+        if (CommonUtils.isEmptyList(iRpcListenerList)) {
+            return;
+        }
+        for (IRpcListener listener : iRpcListenerList) {
+            Class<?> type = getInterfaceT(listener);
+            if (type.equals(iRpcEvent.getClass())) {
+                try {
+                    listener.callBack(iRpcEvent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public static void sendEvent(IRpcEvent iRpcEvent) {

@@ -11,12 +11,12 @@ import org.example.irpc.framework.core.common.RpcDecoder;
 import org.example.irpc.framework.core.common.RpcEncoder;
 import org.example.irpc.framework.core.common.config.PropertiesBootstrap;
 import org.example.irpc.framework.core.common.config.ServerConfig;
+import org.example.irpc.framework.core.common.event.IRpcListenerLoader;
 import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
 
-import static org.example.irpc.framework.core.common.cache.CommonServerCache.PROVIDER_CLASS_MAP;
-import static org.example.irpc.framework.core.common.cache.CommonServerCache.PROVIDER_URL_SET;
+import static org.example.irpc.framework.core.common.cache.CommonServerCache.*;
 
 public class Server {
 
@@ -26,7 +26,7 @@ public class Server {
 
     private ServerConfig serverConfig;
 
-    private RegistryService registryService;
+    private static IRpcListenerLoader iRpcListenerLoader;
 
     public ServerConfig getServerConfig() {
         return serverConfig;
@@ -79,8 +79,8 @@ public class Server {
         if (classes.length > 1) {
             throw new RuntimeException("service must only had one interfaces!");
         }
-        if (registryService == null) {
-            registryService = new ZookeeperRegister(serverConfig.getRegisterAddr());
+        if (REGISTRY_SERVICE == null) {
+            REGISTRY_SERVICE = new ZookeeperRegister(serverConfig.getRegisterAddr());
         }
         Class interfaceClass = classes[0];
         //需要注册的对象统一放在一个MAP集合中进行管理
@@ -104,7 +104,7 @@ public class Server {
                 throw new RuntimeException(e);
             }
             for (URL url : PROVIDER_URL_SET) {
-                registryService.register(url);
+                REGISTRY_SERVICE.register(url);
             }
         });
         task.start();
@@ -113,7 +113,10 @@ public class Server {
     public static void main(String[] args) throws InterruptedException {
         Server server = new Server();
         server.initServerConfig();
+        iRpcListenerLoader = new IRpcListenerLoader();
+        iRpcListenerLoader.init();
         server.exportService(new DataServiceImpl());
+        ApplicationShutdownHook.registryShutdownHook();
         server.startApplication();
     }
 }

@@ -5,27 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e1d399f8-0cff-4403-a138-c92eaa1ceca5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/ChannelFuturePollingRef.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcNodeChangeEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/listener/ProviderNodeDataChangeListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/router/IRouter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/router/RandomRouterImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/router/RotateRouterImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/router/Selector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcDestroyEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/listener/ServiceDestroyListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/ApplicationShutdownHook.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/ConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/ConnectionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/ChannelFutureWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/ChannelFutureWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonClientCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonClientCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ClientConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/constants/RpcConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/constants/RpcConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/URL.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/URL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/AbstractRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/AbstractRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ProviderNodeInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ProviderNodeInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ZookeeperRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ZookeeperRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/irpc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/irpc.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonServerCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonServerCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListenerLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/event/IRpcListenerLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,8 +106,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.Client" />
         <item itemvalue="Application.RandomRouterImpl" />
       </list>
     </recent_temporary>
@@ -137,7 +123,7 @@
       <workItem from="1680853658515" duration="2723000" />
       <workItem from="1681308008537" duration="6186000" />
       <workItem from="1681393492333" duration="5264000" />
-      <workItem from="1681463321057" duration="30966000" />
+      <workItem from="1681463321057" duration="32337000" />
     </task>
     <servers />
   </component>
