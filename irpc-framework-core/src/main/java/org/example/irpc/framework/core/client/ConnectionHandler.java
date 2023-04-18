@@ -4,6 +4,7 @@ package org.example.irpc.framework.core.client;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import org.example.irpc.framework.core.common.ChannelFutureWrapper;
+import org.example.irpc.framework.core.common.router.Selector;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -11,8 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import static org.example.irpc.framework.core.common.cache.CommonClientCache.CONNECT_MAP;
-import static org.example.irpc.framework.core.common.cache.CommonClientCache.SERVER_ADDRESS;
+import static org.example.irpc.framework.core.common.cache.CommonClientCache.*;
 
 public class ConnectionHandler {
 
@@ -46,10 +46,12 @@ public class ConnectionHandler {
         Integer port = Integer.valueOf(providerAddress[2]);
         //到底这个channelFuture里面是什么
         ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
+        String providerURLInfo = URL_MAP.get(providerServiceName).get(providerIp);
         ChannelFutureWrapper channelFutureWrapper = new ChannelFutureWrapper();
         channelFutureWrapper.setChannelFuture(channelFuture);
         channelFutureWrapper.setPort(port);
         channelFutureWrapper.setHost(ip);
+        channelFutureWrapper.setWeight(Integer.valueOf(providerURLInfo.substring(providerURLInfo.lastIndexOf(";")+1)));
         SERVER_ADDRESS.add(providerIp);
         List<ChannelFutureWrapper> channelFutureWrappers = CONNECT_MAP.get(providerServiceName);
         if (CommonUtils.isEmptyList(channelFutureWrappers)) {
@@ -57,6 +59,9 @@ public class ConnectionHandler {
         }
         channelFutureWrappers.add(channelFutureWrapper);
         CONNECT_MAP.put(providerServiceName, channelFutureWrappers);
+        Selector selector = new Selector();
+        selector.setProviderServiceName(providerServiceName);
+        IROUTER.refreshRouterArr(selector);
     }
 
     /**
@@ -102,7 +107,10 @@ public class ConnectionHandler {
         if (CommonUtils.isEmptyList(channelFutureWrappers)) {
             throw new RuntimeException("no provider exist for " + providerServiceName);
         }
-        ChannelFuture channelFuture = channelFutureWrappers.get(new Random().nextInt(channelFutureWrappers.size())).getChannelFuture();
+        Selector selector = new Selector();
+        selector.setProviderServiceName(providerServiceName);
+//        ChannelFuture channelFuture = channelFutureWrappers.get(new Random().nextInt(channelFutureWrappers.size())).getChannelFuture();
+        ChannelFuture channelFuture = IROUTER.select(selector).getChannelFuture();
         return channelFuture;
     }
 }

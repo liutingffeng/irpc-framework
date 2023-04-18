@@ -8,6 +8,19 @@ public class ClientConfig {
 
     private String proxyType;
 
+    /**
+     * 负载均衡策略 example:random,rotate
+     */
+    private String routerStrategy;
+
+    public String getRouterStrategy() {
+        return routerStrategy;
+    }
+
+    public void setRouterStrategy(String routerStrategy) {
+        this.routerStrategy = routerStrategy;
+    }
+
     public String getApplicationName() {
         return applicationName;
     }

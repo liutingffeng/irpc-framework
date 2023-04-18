@@ -55,6 +55,19 @@ public class PropertiesLoader {
         return propertiesMap.get(key);
     }
 
+    public static String getPropertiesNotBlank(String key) {
+        String val = getPropertiesStr(key);
+        if (val == null || val.equals("")) {
+            throw new IllegalArgumentException(key + " 配置为空异常");
+        }
+        return val;
+    }
+
+    public static String getPropertiesStrDefault(String key, String defaultVal) {
+        String val = getPropertiesStr(key);
+        return val == null || val.equals("") ? defaultVal : val;
+    }
+
     /**
      * 根据键值获取配置属性
      *
