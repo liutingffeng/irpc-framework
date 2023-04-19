@@ -8,6 +8,19 @@ public class ServerConfig {
 
     private String applicationName;
 
+    /**
+     * 服务端序列化方式 example: hession2,kryo,jdk,fastjson
+     */
+    private String serverSerialize;
+
+    public String getServerSerialize() {
+        return serverSerialize;
+    }
+
+    public void setServerSerialize(String serverSerialize) {
+        this.serverSerialize = serverSerialize;
+    }
+
     public Integer getServerPort() {
         return serverPort;
     }

@@ -15,8 +15,13 @@ import org.example.irpc.framework.core.common.event.IRpcListenerLoader;
 import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
+import org.example.irpc.framework.core.serialize.fastjson.FastJsonSerializeFactory;
+import org.example.irpc.framework.core.serialize.hessian.HessianSerializeFactory;
+import org.example.irpc.framework.core.serialize.jdk.JdkSerializeFactory;
+import org.example.irpc.framework.core.serialize.kryo.KryoSerializeFactory;
 
 import static org.example.irpc.framework.core.common.cache.CommonServerCache.*;
+import static org.example.irpc.framework.core.common.constants.RpcConstants.*;
 
 public class Server {
 
@@ -64,6 +69,24 @@ public class Server {
     public void initServerConfig() {
         ServerConfig serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
         this.setServerConfig(serverConfig);
+        String serverSerialize = serverConfig.getServerSerialize();
+        switch (serverSerialize) {
+            case JDK_SERIALIZE_TYPE:
+                SERVER_SERIALIZE_FACTORY = new JdkSerializeFactory();
+                break;
+            case FAST_JSON_SERIALIZE_TYPE:
+                SERVER_SERIALIZE_FACTORY = new FastJsonSerializeFactory();
+                break;
+            case HESSIAN2_SERIALIZE_TYPE:
+                SERVER_SERIALIZE_FACTORY = new HessianSerializeFactory();
+                break;
+            case KRYO_SERIALIZE_TYPE:
+                SERVER_SERIALIZE_FACTORY = new KryoSerializeFactory();
+                break;
+            default:
+                throw new RuntimeException("no match serialize type for" + serverSerialize);
+        }
+        System.out.println("serverSerialize is "+serverSerialize);
     }
 
     /**

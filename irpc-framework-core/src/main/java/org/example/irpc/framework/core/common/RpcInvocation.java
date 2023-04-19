@@ -1,6 +1,8 @@
 package org.example.irpc.framework.core.common;
 
-public class RpcInvocation {
+import java.io.Serializable;
+
+public class RpcInvocation implements Serializable {
 
     //请求的目标方法，例如findUser
     private String targetMethod;

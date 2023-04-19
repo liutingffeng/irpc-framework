@@ -13,6 +13,19 @@ public class ClientConfig {
      */
     private String routerStrategy;
 
+    /**
+     * 客户端序列化方式 example: hession2,kryo,jdk,fastjson
+     */
+    private String clientSerialize;
+
+    public String getClientSerialize() {
+        return clientSerialize;
+    }
+
+    public void setClientSerialize(String clientSerialize) {
+        this.clientSerialize = clientSerialize;
+    }
+
     public String getRouterStrategy() {
         return routerStrategy;
     }

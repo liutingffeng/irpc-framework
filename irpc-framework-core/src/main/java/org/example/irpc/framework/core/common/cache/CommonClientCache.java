@@ -6,6 +6,7 @@ import org.example.irpc.framework.core.common.RpcInvocation;
 import org.example.irpc.framework.core.common.config.ClientConfig;
 import org.example.irpc.framework.core.common.router.IRouter;
 import org.example.irpc.framework.core.registy.URL;
+import org.example.irpc.framework.core.serialize.SerializeFactory;
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -26,4 +27,5 @@ public class CommonClientCache {
     public static Map<String, ChannelFutureWrapper[]> SERVICE_ROUTER_MAP = new ConcurrentHashMap<>();
     public static ChannelFuturePollingRef CHANNEL_FUTURE_POLLING_REF = new ChannelFuturePollingRef();
     public static IRouter IROUTER;
+    public static SerializeFactory CLIENT_SERIALIZE_FACTORY;
 }

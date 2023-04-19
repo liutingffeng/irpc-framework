@@ -23,6 +23,10 @@ import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.registy.zookeeper.AbstractRegister;
 import org.example.irpc.framework.core.registy.zookeeper.CuratorZookeeperClient;
 import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
+import org.example.irpc.framework.core.serialize.fastjson.FastJsonSerializeFactory;
+import org.example.irpc.framework.core.serialize.hessian.HessianSerializeFactory;
+import org.example.irpc.framework.core.serialize.jdk.JdkSerializeFactory;
+import org.example.irpc.framework.core.serialize.kryo.KryoSerializeFactory;
 import org.example.irpc.framework.interfaces.DataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.example.irpc.framework.core.common.cache.CommonClientCache.*;
-import static org.example.irpc.framework.core.common.constants.RpcConstants.RANDOM_ROUTER_TYPE;
-import static org.example.irpc.framework.core.common.constants.RpcConstants.ROTATE_ROUTER_TYPE;
+import static org.example.irpc.framework.core.common.constants.RpcConstants.*;
 
 public class Client {
     private Logger logger = LoggerFactory.getLogger(Client.class);
@@ -149,8 +152,9 @@ public class Client {
                     //阻塞模式
                     RpcInvocation data = SEND_QUEUE.take();
                     //将RpcInvocation封装到RpcProtocol对象中，然后发送给服务端，这里正好对应了上文中的ServerHandler
-                    String json = JSON.toJSONString(data);
-                    RpcProtocol rpcProtocol = new RpcProtocol(json.getBytes());
+//                    String json = JSON.toJSONString(data);
+                    RpcProtocol rpcProtocol = new RpcProtocol(CLIENT_SERIALIZE_FACTORY.serialize(data));
+//                    RpcProtocol rpcProtocol = new RpcProtocol(json.getBytes());
                     ChannelFuture channelFuture = ConnectionHandler.getChannelFuture(data.getTargetServiceName());
                     //netty的通道负责发送数据给服务端
                     channelFuture.channel().writeAndFlush(rpcProtocol);
@@ -168,10 +172,32 @@ public class Client {
     private void initClientConfig() {
         //初始化路由策略
         String routerStrategy = clientConfig.getRouterStrategy();
-        if (RANDOM_ROUTER_TYPE.equals(routerStrategy)) {
-            IROUTER = new RandomRouterImpl();
-        } else if (ROTATE_ROUTER_TYPE.equals(routerStrategy)) {
-            IROUTER = new RotateRouterImpl();
+        switch (routerStrategy) {
+            case RANDOM_ROUTER_TYPE:
+                IROUTER = new RandomRouterImpl();
+                break;
+            case ROTATE_ROUTER_TYPE:
+                IROUTER = new RotateRouterImpl();
+                break;
+            default:
+                throw new RuntimeException("no match routerStrategy for" + routerStrategy);
+        }
+        String clientSerialize = clientConfig.getClientSerialize();
+        switch (clientSerialize) {
+            case JDK_SERIALIZE_TYPE:
+                CLIENT_SERIALIZE_FACTORY = new JdkSerializeFactory();
+                break;
+            case FAST_JSON_SERIALIZE_TYPE:
+                CLIENT_SERIALIZE_FACTORY = new FastJsonSerializeFactory();
+                break;
+            case HESSIAN2_SERIALIZE_TYPE:
+                CLIENT_SERIALIZE_FACTORY = new HessianSerializeFactory();
+                break;
+            case KRYO_SERIALIZE_TYPE:
+                CLIENT_SERIALIZE_FACTORY = new KryoSerializeFactory();
+                break;
+            default:
+                throw new RuntimeException("no match serialize type for " + clientSerialize);
         }
     }
 
@@ -186,7 +212,7 @@ public class Client {
         ConnectionHandler.setBootstrap(client.getBootstrap());
         client.doConnectServer();
         client.startClient();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             try {
                 String result = dataService.sendData("test");
                 System.out.println(result);
