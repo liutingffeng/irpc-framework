@@ -1,5 +1,6 @@
 package org.example.irpc.framework.core.proxy.jdk;
 
+import org.example.irpc.framework.core.client.RpcReferenceWrapper;
 import org.example.irpc.framework.core.common.RpcInvocation;
 
 import java.lang.reflect.InvocationHandler;
@@ -12,9 +13,9 @@ import static org.example.irpc.framework.core.common.cache.CommonClientCache.SEN
 
 public class JDKClientInvocationHandler implements InvocationHandler {
     private final static Object OBJECT = new Object();
-    private Class<?> clazz;
-    public JDKClientInvocationHandler(Class<?> clazz) {
-        this.clazz = clazz;
+    private RpcReferenceWrapper rpcReferenceWrapper;
+    public JDKClientInvocationHandler(RpcReferenceWrapper rpcReferenceWrapper) {
+        this.rpcReferenceWrapper = rpcReferenceWrapper;
     }
 
     @Override
@@ -22,9 +23,9 @@ public class JDKClientInvocationHandler implements InvocationHandler {
         RpcInvocation rpcInvocation = new RpcInvocation();
         rpcInvocation.setArgs(args);
         rpcInvocation.setTargetMethod(method.getName());
-        rpcInvocation.setTargetServiceName(clazz.getName());
-        // 这里面注入了一个uuid，对每一次的请求都做单独区分
+        rpcInvocation.setTargetServiceName(rpcReferenceWrapper.getAimClass().getName());
         rpcInvocation.setUuid(UUID.randomUUID().toString());
+        rpcInvocation.setAttachments(rpcReferenceWrapper.getAttatchments());
         RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
         // 这里就是将请求的参数放入到发送队列中
         SEND_QUEUE.add(rpcInvocation);

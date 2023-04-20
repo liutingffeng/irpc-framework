@@ -21,6 +21,10 @@ public class CommonUtils {
         return false;
     }
 
+    public static boolean isNotEmpty(String str){
+        return !isEmpty(str);
+    }
+
     public static boolean isNotEmptyList(List list) {
         return !isEmptyList(list);
     }

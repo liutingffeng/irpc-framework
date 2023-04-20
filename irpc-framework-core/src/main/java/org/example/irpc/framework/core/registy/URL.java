@@ -17,7 +17,6 @@ public class URL {
      * 注册到节点到服务名称，例如：com.sise.test.UserService
      */
     private String serviceName;
-
     /**
      * 这里面可以自定义不限进行扩展
      * 分组
@@ -27,8 +26,8 @@ public class URL {
      */
     private Map<String, String> parameters = new HashMap<>();
 
-    public void addParameter(String key, String value){
-        parameters.putIfAbsent(key, value);
+    public void addParameter(String key, String value) {
+        this.parameters.putIfAbsent(key, value);
     }
 
     public String getApplicationName() {
@@ -55,35 +54,31 @@ public class URL {
         this.parameters = parameters;
     }
 
+
     /**
-     * 将URL转换为写入zk的consumer节点下的一段字符串
+     * 将URL转换为写入zk的provider节点下的一段字符串
+     *
      * @param url
      * @return
      */
     public static String buildProviderUrlStr(URL url) {
         String host = url.getParameters().get("host");
         String port = url.getParameters().get("port");
-        return new String((url.getApplicationName() + ";" +
-                url.getServiceName() + ";" +
-                host + ":" +
-                port + ";" +
-                System.currentTimeMillis() + ";100").getBytes(),
-                StandardCharsets.UTF_8);
+        String group = url.getParameters().get("group");
+        return new String((url.getApplicationName() + ";" + url.getServiceName() + ";" + host + ":" + port + ";" + System.currentTimeMillis() + ";100;" + group).getBytes(), StandardCharsets.UTF_8);
     }
 
     /**
      * 将URL转换为写入zk的consumer节点下的一段字符串
+     *
      * @param url
      * @return
      */
     public static String buildConsumerUrlStr(URL url) {
         String host = url.getParameters().get("host");
-        return new String((url.getApplicationName() + ";" +
-                url.getServiceName() + ";" +
-                host + ";" +
-                System.currentTimeMillis()).getBytes(),
-                StandardCharsets.UTF_8);
+        return new String((url.getApplicationName() + ";" + url.getServiceName() + ";" + host + ";" + System.currentTimeMillis()).getBytes(), StandardCharsets.UTF_8);
     }
+
 
     /**
      * 将某个节点下的信息转换为一个Provider节点对象
@@ -92,12 +87,20 @@ public class URL {
      * @return
      */
     public static ProviderNodeInfo buildURLFromUrlStr(String providerNodeStr) {
-        String[] items = providerNodeStr.split("/");
+        String[] items = providerNodeStr.split(";");
         ProviderNodeInfo providerNodeInfo = new ProviderNodeInfo();
+        providerNodeInfo.setApplicationName(items[0]);
         providerNodeInfo.setServiceName(items[1]);
         providerNodeInfo.setAddress(items[2]);
         providerNodeInfo.setRegistryTime(items[3]);
         providerNodeInfo.setWeight(Integer.valueOf(items[4]));
+        providerNodeInfo.setGroup(String.valueOf(items[5]));
         return providerNodeInfo;
+    }
+
+
+    public static void main(String[] args) {
+        ProviderNodeInfo providerNodeInfo = buildURLFromUrlStr("irpc-provider;org.idea.irpc.framework.interfaces.UserService;192.168.43.227:9093;1643429082637;100;default");
+        System.out.println(providerNodeInfo);
     }
 }

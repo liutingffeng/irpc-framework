@@ -4,13 +4,13 @@ package org.example.irpc.framework.core.client;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import org.example.irpc.framework.core.common.ChannelFutureWrapper;
+import org.example.irpc.framework.core.common.RpcInvocation;
 import org.example.irpc.framework.core.common.router.Selector;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
+import org.example.irpc.framework.core.registy.URL;
+import org.example.irpc.framework.core.registy.zookeeper.ProviderNodeInfo;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.example.irpc.framework.core.common.cache.CommonClientCache.*;
 
@@ -43,21 +43,25 @@ public class ConnectionHandler {
         }
         String[] providerAddress = providerIp.split(":");
         String ip = providerAddress[0];
-        Integer port = Integer.valueOf(providerAddress[2]);
+        Integer port = Integer.parseInt(providerAddress[1]);
         //到底这个channelFuture里面是什么
         ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
         String providerURLInfo = URL_MAP.get(providerServiceName).get(providerIp);
+        ProviderNodeInfo providerNodeInfo = URL.buildURLFromUrlStr(providerURLInfo);
+        //todo 缺少一个将url进行转换的组件
         ChannelFutureWrapper channelFutureWrapper = new ChannelFutureWrapper();
         channelFutureWrapper.setChannelFuture(channelFuture);
-        channelFutureWrapper.setPort(port);
         channelFutureWrapper.setHost(ip);
-        channelFutureWrapper.setWeight(Integer.valueOf(providerURLInfo.substring(providerURLInfo.lastIndexOf(";")+1)));
+        channelFutureWrapper.setPort(port);
+        channelFutureWrapper.setWeight(providerNodeInfo.getWeight());
+        channelFutureWrapper.setGroup(providerNodeInfo.getGroup());
         SERVER_ADDRESS.add(providerIp);
         List<ChannelFutureWrapper> channelFutureWrappers = CONNECT_MAP.get(providerServiceName);
         if (CommonUtils.isEmptyList(channelFutureWrappers)) {
             channelFutureWrappers = new ArrayList<>();
         }
         channelFutureWrappers.add(channelFutureWrapper);
+        //例如com.sise.test.UserService会被放入到一个Map集合中，key是服务的名字，value是对应的channel通道的List集合
         CONNECT_MAP.put(providerServiceName, channelFutureWrappers);
         Selector selector = new Selector();
         selector.setProviderServiceName(providerServiceName);
@@ -99,14 +103,16 @@ public class ConnectionHandler {
     /**
      * 默认走随机策略获取ChannelFuture
      *
-     * @param providerServiceName
+     * @param rpcInvocation
      * @return
      */
-    public static ChannelFuture getChannelFuture(String providerServiceName) {
-        List<ChannelFutureWrapper> channelFutureWrappers = CONNECT_MAP.get(providerServiceName);
+    public static ChannelFuture getChannelFuture(RpcInvocation rpcInvocation) {
+        String providerServiceName = rpcInvocation.getTargetServiceName();
+        List<ChannelFutureWrapper> channelFutureWrappers = Arrays.asList(SERVICE_ROUTER_MAP.get(providerServiceName));
         if (CommonUtils.isEmptyList(channelFutureWrappers)) {
             throw new RuntimeException("no provider exist for " + providerServiceName);
         }
+        CLIENT_FILTER_CHAIN.doFilter(channelFutureWrappers, rpcInvocation);
         Selector selector = new Selector();
         selector.setProviderServiceName(providerServiceName);
 //        ChannelFuture channelFuture = channelFutureWrappers.get(new Random().nextInt(channelFutureWrappers.size())).getChannelFuture();

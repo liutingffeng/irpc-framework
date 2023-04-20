@@ -18,6 +18,10 @@ import org.example.irpc.framework.core.common.event.IRpcListenerLoader;
 import org.example.irpc.framework.core.common.router.RandomRouterImpl;
 import org.example.irpc.framework.core.common.router.RotateRouterImpl;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
+import org.example.irpc.framework.core.filter.client.ClientFilterChain;
+import org.example.irpc.framework.core.filter.client.ClientLogFilterImpl;
+import org.example.irpc.framework.core.filter.client.DirectInvokeFilterImpl;
+import org.example.irpc.framework.core.filter.client.GroupFilterImpl;
 import org.example.irpc.framework.core.proxy.jdk.JDKProxyFactory;
 import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.registy.zookeeper.AbstractRegister;
@@ -78,6 +82,7 @@ public class Client {
         iRpcListenerLoader = new IRpcListenerLoader();
         iRpcListenerLoader.init();
         clientConfig = PropertiesBootstrap.loadClientConfigFromLocal();
+        CLIENT_CONFIG = this.clientConfig;
         RpcReference rpcReference = null;
         if ("javassist".equals(clientConfig.getProxyType())) {
 //            rpcReference = new RpcReference(new JavassistProxyFactory());
@@ -155,7 +160,7 @@ public class Client {
 //                    String json = JSON.toJSONString(data);
                     RpcProtocol rpcProtocol = new RpcProtocol(CLIENT_SERIALIZE_FACTORY.serialize(data));
 //                    RpcProtocol rpcProtocol = new RpcProtocol(json.getBytes());
-                    ChannelFuture channelFuture = ConnectionHandler.getChannelFuture(data.getTargetServiceName());
+                    ChannelFuture channelFuture = ConnectionHandler.getChannelFuture(data);
                     //netty的通道负责发送数据给服务端
                     channelFuture.channel().writeAndFlush(rpcProtocol);
                 } catch (InterruptedException e) {
@@ -199,6 +204,13 @@ public class Client {
             default:
                 throw new RuntimeException("no match serialize type for " + clientSerialize);
         }
+
+        // 初始化过滤器
+        ClientFilterChain clientFilterChain = new ClientFilterChain();
+        clientFilterChain.addClientFilter(new DirectInvokeFilterImpl());
+        clientFilterChain.addClientFilter(new GroupFilterImpl());
+        clientFilterChain.addClientFilter(new ClientLogFilterImpl());
+        CLIENT_FILTER_CHAIN = clientFilterChain;
     }
 
     public static void main(String[] args) throws Throwable {
@@ -207,7 +219,11 @@ public class Client {
 //        client.setClientConfig(clientConfig);
         RpcReference rpcReference = client.initClientApplication();
         client.initClientConfig();
-        DataService dataService = rpcReference.get(DataService.class);
+        RpcReferenceWrapper<DataService> rpcReferenceWrapper = new RpcReferenceWrapper<>();
+        rpcReferenceWrapper.setAimClass(DataService.class);
+        rpcReferenceWrapper.setGroup("dev");
+        rpcReferenceWrapper.setServiceToken("token-a");
+        DataService dataService = rpcReference.get(rpcReferenceWrapper);
         client.doSubscribeService(DataService.class);
         ConnectionHandler.setBootstrap(client.getBootstrap());
         client.doConnectServer();

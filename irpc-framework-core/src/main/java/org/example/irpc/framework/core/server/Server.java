@@ -12,6 +12,10 @@ import org.example.irpc.framework.core.common.RpcEncoder;
 import org.example.irpc.framework.core.common.config.PropertiesBootstrap;
 import org.example.irpc.framework.core.common.config.ServerConfig;
 import org.example.irpc.framework.core.common.event.IRpcListenerLoader;
+import org.example.irpc.framework.core.common.utils.CommonUtils;
+import org.example.irpc.framework.core.filter.server.ServerFilterChain;
+import org.example.irpc.framework.core.filter.server.ServerLogFilterImpl;
+import org.example.irpc.framework.core.filter.server.ServerTokenFilterImpl;
 import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
@@ -87,14 +91,20 @@ public class Server {
                 throw new RuntimeException("no match serialize type for" + serverSerialize);
         }
         System.out.println("serverSerialize is "+serverSerialize);
+        SERVER_CONFIG = serverConfig;
+        ServerFilterChain serverFilterChain = new ServerFilterChain();
+        serverFilterChain.addServerFilter(new ServerLogFilterImpl());
+        serverFilterChain.addServerFilter(new ServerTokenFilterImpl());
+        SERVER_FILTER_CHAIN = serverFilterChain;
     }
 
     /**
      * 暴露服务信息
      *
-     * @param serviceBean
+     * @param serviceWrapper
      */
-    public void exportService(Object serviceBean) {
+    public void exportService(ServiceWrapper serviceWrapper) {
+        Object serviceBean = serviceWrapper.getServiceObj();
         if (serviceBean.getClass().getInterfaces().length == 0) {
             throw new RuntimeException("service must had interfaces!");
         }
@@ -111,9 +121,14 @@ public class Server {
         URL url = new URL();
         url.setServiceName(interfaceClass.getName());
         url.setApplicationName(serverConfig.getApplicationName());
-        url.addParameter("host", serverConfig.getRegisterAddr());
+        url.addParameter("host", CommonUtils.getIpAddress());
         url.addParameter("port", String.valueOf(serverConfig.getServerPort()));
+        url.addParameter("group", String.valueOf(serviceWrapper.getGroup()));
+        url.addParameter("limit", String.valueOf(serviceWrapper.getLimit()));
         PROVIDER_URL_SET.add(url);
+        if (CommonUtils.isNotEmpty(serviceWrapper.getServiceToken())) {
+            PROVIDER_SERVICE_WRAPPER_MAP.put(interfaceClass.getName(), serviceWrapper);
+        }
     }
 
     /**
@@ -138,7 +153,12 @@ public class Server {
         server.initServerConfig();
         iRpcListenerLoader = new IRpcListenerLoader();
         iRpcListenerLoader.init();
-        server.exportService(new DataServiceImpl());
+        ServiceWrapper dataServiceServiceWrapper = new ServiceWrapper();
+        dataServiceServiceWrapper.setServiceObj(new DataServiceImpl());
+        dataServiceServiceWrapper.setServiceToken("token-a");
+        dataServiceServiceWrapper.setLimit(2);
+        dataServiceServiceWrapper.setGroup("dev");
+        server.exportService(dataServiceServiceWrapper);
         ApplicationShutdownHook.registryShutdownHook();
         server.startApplication();
     }

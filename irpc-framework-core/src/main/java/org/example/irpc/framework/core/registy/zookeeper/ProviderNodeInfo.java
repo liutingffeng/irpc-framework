@@ -2,6 +2,8 @@ package org.example.irpc.framework.core.registy.zookeeper;
 
 public class ProviderNodeInfo {
 
+    private String applicationName;
+
     private String serviceName;
 
     private String address;
@@ -9,6 +11,24 @@ public class ProviderNodeInfo {
     private Integer weight;
 
     private String registryTime;
+
+    private String group;
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
 
     public String getRegistryTime() {
         return registryTime;

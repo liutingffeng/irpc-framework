@@ -5,6 +5,7 @@ import org.example.irpc.framework.core.common.ChannelFutureWrapper;
 import org.example.irpc.framework.core.common.RpcInvocation;
 import org.example.irpc.framework.core.common.config.ClientConfig;
 import org.example.irpc.framework.core.common.router.IRouter;
+import org.example.irpc.framework.core.filter.client.ClientFilterChain;
 import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.serialize.SerializeFactory;
 
@@ -28,4 +29,6 @@ public class CommonClientCache {
     public static ChannelFuturePollingRef CHANNEL_FUTURE_POLLING_REF = new ChannelFuturePollingRef();
     public static IRouter IROUTER;
     public static SerializeFactory CLIENT_SERIALIZE_FACTORY;
+    public static ClientConfig CLIENT_CONFIG;
+    public static ClientFilterChain CLIENT_FILTER_CHAIN;
 }
