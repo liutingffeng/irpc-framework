@@ -13,6 +13,7 @@ public class PropertiesBootstrap {
     public static final String ROUTER_TYPE = "irpc.router";
     public static final String SERVER_SERIALIZE_TYPE = "irpc.serverSerialize";
     public static final String CLIENT_SERIALIZE_TYPE = "irpc.clientSerialize";
+    public static final String REGISTER_TYPE = "irpc.registerType";
 
     public static ServerConfig loadServerConfigFromLocal() {
         try {
@@ -37,6 +38,7 @@ public class PropertiesBootstrap {
         ClientConfig clientConfig = new ClientConfig();
         clientConfig.setApplicationName(PropertiesLoader.getPropertiesNotBlank(APPLICATION_NAME));
         clientConfig.setRegisterAddr(PropertiesLoader.getPropertiesNotBlank(REGISTER_ADDRESS));
+        clientConfig.setRegisterType(PropertiesLoader.getPropertiesNotBlank(REGISTER_TYPE));
         clientConfig.setProxyType(PropertiesLoader.getPropertiesStrDefault(PROXY_TYPE,JDK_PROXY_TYPE));
         clientConfig.setRouterStrategy(PropertiesLoader.getPropertiesStrDefault(ROUTER_TYPE,RANDOM_ROUTER_TYPE));
         clientConfig.setClientSerialize(PropertiesLoader.getPropertiesStrDefault(CLIENT_SERIALIZE_TYPE,JDK_SERIALIZE_TYPE));

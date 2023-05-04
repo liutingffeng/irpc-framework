@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.example.irpc.framework.core.common.cache.CommonClientCache.CLIENT_CONFIG;
+import static org.example.irpc.framework.core.common.cache.CommonServerCache.SERVER_CONFIG;
+
 public class ZookeeperRegister extends AbstractRegister {
 
     private AbstractZookeeperClient zkClient;
@@ -29,6 +32,10 @@ public class ZookeeperRegister extends AbstractRegister {
         return ROOT + "/" + url.getServiceName() + "/consumer/" + url.getApplicationName() + ":" + url.getParameters().get("host") + ":";
     }
 
+    public ZookeeperRegister() {
+        String registryAddr = CLIENT_CONFIG!= null ? CLIENT_CONFIG.getRegisterAddr() : SERVER_CONFIG.getRegisterAddr();
+        this.zkClient = new CuratorZookeeperClient(registryAddr);
+    }
     public ZookeeperRegister(String address) {
         this.zkClient = new CuratorZookeeperClient(address);
     }

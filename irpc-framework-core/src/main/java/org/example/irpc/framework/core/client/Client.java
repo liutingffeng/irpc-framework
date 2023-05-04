@@ -15,18 +15,22 @@ import org.example.irpc.framework.core.common.RpcProtocol;
 import org.example.irpc.framework.core.common.config.ClientConfig;
 import org.example.irpc.framework.core.common.config.PropertiesBootstrap;
 import org.example.irpc.framework.core.common.event.IRpcListenerLoader;
+import org.example.irpc.framework.core.common.router.IRouter;
 import org.example.irpc.framework.core.common.router.RandomRouterImpl;
 import org.example.irpc.framework.core.common.router.RotateRouterImpl;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
+import org.example.irpc.framework.core.filter.IClientFilter;
 import org.example.irpc.framework.core.filter.client.ClientFilterChain;
 import org.example.irpc.framework.core.filter.client.ClientLogFilterImpl;
 import org.example.irpc.framework.core.filter.client.DirectInvokeFilterImpl;
 import org.example.irpc.framework.core.filter.client.GroupFilterImpl;
 import org.example.irpc.framework.core.proxy.jdk.JDKProxyFactory;
+import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.registy.zookeeper.AbstractRegister;
 import org.example.irpc.framework.core.registy.zookeeper.CuratorZookeeperClient;
 import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
+import org.example.irpc.framework.core.serialize.SerializeFactory;
 import org.example.irpc.framework.core.serialize.fastjson.FastJsonSerializeFactory;
 import org.example.irpc.framework.core.serialize.hessian.HessianSerializeFactory;
 import org.example.irpc.framework.core.serialize.jdk.JdkSerializeFactory;
@@ -35,11 +39,14 @@ import org.example.irpc.framework.interfaces.DataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.example.irpc.framework.core.common.cache.CommonClientCache.*;
 import static org.example.irpc.framework.core.common.constants.RpcConstants.*;
+import static org.example.irpc.framework.core.spi.ExtensionLoader.EXTENSION_LOADER_CLASS_CACHE;
 
 public class Client {
     private Logger logger = LoggerFactory.getLogger(Client.class);
@@ -51,8 +58,6 @@ public class Client {
     private Bootstrap bootstrap = new Bootstrap();
 
     private IRpcListenerLoader iRpcListenerLoader;
-
-    private AbstractRegister abstractRegister;
 
     public ClientConfig getClientConfig() {
         return clientConfig;
@@ -66,7 +71,7 @@ public class Client {
         this.clientConfig = clientConfig;
     }
 
-    private RpcReference initClientApplication() throws InterruptedException {
+    private RpcReference initClientApplication() {
         EventLoopGroup clientGroup = new NioEventLoopGroup();
         bootstrap.group(clientGroup)
                 .channel(NioSocketChannel.class)
@@ -104,16 +109,26 @@ public class Client {
      * @param serviceBean
      */
     public void doSubscribeService(Class serviceBean) {
-        if (abstractRegister == null) {
-            abstractRegister = new ZookeeperRegister(clientConfig.getRegisterAddr());
+        if (ABSTRACT_REGISTER == null) {
+            try {
+                // 使用自定义的SPI机制去加载配置
+                EXTENSION_LOADER.loadExtension(RegistryService.class);
+                Map<String, Class> registerMap = EXTENSION_LOADER_CLASS_CACHE.get(RegistryService.class.getName());
+                Class registerClass = registerMap.get(clientConfig.getRegisterType());
+                // 真正实例化对象的位置
+                ABSTRACT_REGISTER = (AbstractRegister) registerClass.newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException("registryServiceType unKnow,error is ", e);
+            }
+            ABSTRACT_REGISTER = new ZookeeperRegister(clientConfig.getRegisterAddr());
         }
         URL url = new URL();
         url.setApplicationName(clientConfig.getApplicationName());
         url.setServiceName(serviceBean.getName());
         url.addParameter("host", CommonUtils.getIpAddress());
-        Map<String, String> result = abstractRegister.getServiceWeightMap(serviceBean.getName());
+        Map<String, String> result = ABSTRACT_REGISTER.getServiceWeightMap(serviceBean.getName());
         URL_MAP.put(serviceBean.getName(), result);
-        abstractRegister.subscribe(url);
+        ABSTRACT_REGISTER.subscribe(url);
     }
 
     /**
@@ -121,7 +136,7 @@ public class Client {
      */
     public void doConnectServer() {
         for (URL providerURL : SUBSCRIBE_SERVICE_LIST) {
-            List<String> providerIps = abstractRegister.getProviderIps(providerURL.getServiceName());
+            List<String> providerIps = ABSTRACT_REGISTER.getProviderIps(providerURL.getServiceName());
             for (String providerIp : providerIps) {
                 try {
                     ConnectionHandler.connect(providerURL.getServiceName(), providerIp);
@@ -133,7 +148,7 @@ public class Client {
             url.addParameter("servicePath",providerURL.getServiceName()+"/provider");
             url.addParameter("providerIps", JSON.toJSONString(providerIps));
             // 客户端在此新增一个订阅的功能
-            abstractRegister.doAfterSubscribe(url);
+            ABSTRACT_REGISTER.doAfterSubscribe(url);
         }
     }
 
@@ -174,42 +189,38 @@ public class Client {
      * todo
      * 后续可以考虑加入spi
      */
-    private void initClientConfig() {
-        //初始化路由策略
+    private void initClientConfig() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        // 初始化路由策略
+        EXTENSION_LOADER.loadExtension(IRouter.class);
         String routerStrategy = clientConfig.getRouterStrategy();
-        switch (routerStrategy) {
-            case RANDOM_ROUTER_TYPE:
-                IROUTER = new RandomRouterImpl();
-                break;
-            case ROTATE_ROUTER_TYPE:
-                IROUTER = new RotateRouterImpl();
-                break;
-            default:
-                throw new RuntimeException("no match routerStrategy for" + routerStrategy);
+        LinkedHashMap<String, Class> iRouterMap = EXTENSION_LOADER_CLASS_CACHE.get(IRouter.class.getName());
+        Class iRouterClass = iRouterMap.get(routerStrategy);
+        if (iRouterClass == null) {
+            throw new RuntimeException("no match routerStrategy for " + routerStrategy);
         }
-        String clientSerialize = clientConfig.getClientSerialize();
-        switch (clientSerialize) {
-            case JDK_SERIALIZE_TYPE:
-                CLIENT_SERIALIZE_FACTORY = new JdkSerializeFactory();
-                break;
-            case FAST_JSON_SERIALIZE_TYPE:
-                CLIENT_SERIALIZE_FACTORY = new FastJsonSerializeFactory();
-                break;
-            case HESSIAN2_SERIALIZE_TYPE:
-                CLIENT_SERIALIZE_FACTORY = new HessianSerializeFactory();
-                break;
-            case KRYO_SERIALIZE_TYPE:
-                CLIENT_SERIALIZE_FACTORY = new KryoSerializeFactory();
-                break;
-            default:
-                throw new RuntimeException("no match serialize type for " + clientSerialize);
-        }
+        IROUTER = (IRouter) iRouterClass.newInstance();
 
-        // 初始化过滤器
+        //初始化序列化框架
+        EXTENSION_LOADER.loadExtension(SerializeFactory.class);
+        String clientSerialize = clientConfig.getClientSerialize();
+        LinkedHashMap<String, Class> serializeMap = EXTENSION_LOADER_CLASS_CACHE.get(SerializeFactory.class.getName());
+        Class serializeFactoryClass = serializeMap.get(clientSerialize);
+        if (serializeFactoryClass == null) {
+            throw new RuntimeException("no match serialize type for " + clientSerialize);
+        }
+        CLIENT_SERIALIZE_FACTORY = (SerializeFactory) serializeFactoryClass.newInstance();
+
+        //初始化过滤链
+        EXTENSION_LOADER.loadExtension(IClientFilter.class);
         ClientFilterChain clientFilterChain = new ClientFilterChain();
-        clientFilterChain.addClientFilter(new DirectInvokeFilterImpl());
-        clientFilterChain.addClientFilter(new GroupFilterImpl());
-        clientFilterChain.addClientFilter(new ClientLogFilterImpl());
+        LinkedHashMap<String, Class> iClientMap = EXTENSION_LOADER_CLASS_CACHE.get(IClientFilter.class.getName());
+        for (String implClassName : iClientMap.keySet()) {
+            Class iClientFilterClass = iClientMap.get(implClassName);
+            if (iClientFilterClass == null) {
+                throw new RuntimeException("no match iClientFilter for " + iClientFilterClass);
+            }
+            clientFilterChain.addClientFilter((IClientFilter) iClientFilterClass.newInstance());
+        }
         CLIENT_FILTER_CHAIN = clientFilterChain;
     }
 

@@ -5,6 +5,7 @@ public class ClientConfig {
     private String applicationName;
 
     private String registerAddr;
+    private String registerType;
 
     private String proxyType;
 
@@ -17,6 +18,14 @@ public class ClientConfig {
      * 客户端序列化方式 example: hession2,kryo,jdk,fastjson
      */
     private String clientSerialize;
+
+    public String getRegisterType() {
+        return registerType;
+    }
+
+    public void setRegisterType(String registerType) {
+        this.registerType = registerType;
+    }
 
     public String getClientSerialize() {
         return clientSerialize;

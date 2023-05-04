@@ -7,7 +7,9 @@ import org.example.irpc.framework.core.common.config.ClientConfig;
 import org.example.irpc.framework.core.common.router.IRouter;
 import org.example.irpc.framework.core.filter.client.ClientFilterChain;
 import org.example.irpc.framework.core.registy.URL;
+import org.example.irpc.framework.core.registy.zookeeper.AbstractRegister;
 import org.example.irpc.framework.core.serialize.SerializeFactory;
+import org.example.irpc.framework.core.spi.ExtensionLoader;
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -31,4 +33,6 @@ public class CommonClientCache {
     public static SerializeFactory CLIENT_SERIALIZE_FACTORY;
     public static ClientConfig CLIENT_CONFIG;
     public static ClientFilterChain CLIENT_FILTER_CHAIN;
+    public static ExtensionLoader EXTENSION_LOADER = new ExtensionLoader();
+    public static AbstractRegister ABSTRACT_REGISTER;
 }

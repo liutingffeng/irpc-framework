@@ -1,0 +1,2 @@
+serverLogFilterImpl=org.example.irpc.framework.core.filter.server.ServerLogFilterImpl
+serverTokenFilterImpl=org.example.irpc.framework.core.filter.server.ServerTokenFilterImpl

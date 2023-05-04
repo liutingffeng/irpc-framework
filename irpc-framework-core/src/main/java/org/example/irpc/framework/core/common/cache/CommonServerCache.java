@@ -4,6 +4,7 @@ import org.example.irpc.framework.core.common.config.ServerConfig;
 import org.example.irpc.framework.core.filter.server.ServerFilterChain;
 import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
+import org.example.irpc.framework.core.registy.zookeeper.AbstractRegister;
 import org.example.irpc.framework.core.serialize.SerializeFactory;
 import org.example.irpc.framework.core.server.ServiceWrapper;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CommonServerCache {
     public static final Map<String, Object> PROVIDER_CLASS_MAP = new HashMap<>();
     public static final Set<URL> PROVIDER_URL_SET = new HashSet<>();
-    public static RegistryService REGISTRY_SERVICE;
+    public static AbstractRegister REGISTRY_SERVICE;
     public static SerializeFactory SERVER_SERIALIZE_FACTORY;
     public static ServerConfig SERVER_CONFIG;
     public static ServerFilterChain SERVER_FILTER_CHAIN;
