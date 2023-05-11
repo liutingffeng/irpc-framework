@@ -87,4 +87,28 @@ public class PropertiesLoader {
         }
         return Integer.valueOf(propertiesMap.get(key));
     }
+
+    /**
+     * 根据键值获取配置属性
+     *
+     * @param key
+     * @return
+     */
+    public static Integer getPropertiesIntegerDefault(String key,Integer defaultVal) {
+        if (properties == null) {
+            return null;
+        }
+        if (CommonUtils.isEmpty(key)) {
+            return null;
+        }
+        String value = properties.getProperty(key);
+        if (value == null) {
+            propertiesMap.put(key, String.valueOf(defaultVal));
+            return defaultVal;
+        }
+        if (!propertiesMap.containsKey(key)) {
+            propertiesMap.put(key, value);
+        }
+        return Integer.valueOf(propertiesMap.get(key));
+    }
 }

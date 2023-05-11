@@ -19,6 +19,11 @@ public class ClientConfig {
      */
     private String clientSerialize;
 
+    /**
+     * 客户端发数据的超时时间
+     */
+    private Integer timeOut;
+
     public String getRegisterType() {
         return registerType;
     }
@@ -65,5 +70,13 @@ public class ClientConfig {
 
     public void setProxyType(String proxyType) {
         this.proxyType = proxyType;
+    }
+
+    public Integer getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(Integer timeOut) {
+        this.timeOut = timeOut;
     }
 }

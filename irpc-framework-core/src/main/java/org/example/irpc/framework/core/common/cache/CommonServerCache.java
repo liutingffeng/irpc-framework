@@ -1,6 +1,7 @@
 package org.example.irpc.framework.core.common.cache;
 
 import org.example.irpc.framework.core.common.config.ServerConfig;
+import org.example.irpc.framework.core.dispatcher.ServerChannelDispatcher;
 import org.example.irpc.framework.core.filter.server.ServerFilterChain;
 import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
@@ -22,4 +23,7 @@ public class CommonServerCache {
     public static ServerConfig SERVER_CONFIG;
     public static ServerFilterChain SERVER_FILTER_CHAIN;
     public static final Map<String, ServiceWrapper> PROVIDER_SERVICE_WRAPPER_MAP = new ConcurrentHashMap<>();
+    //分发器对象
+    public static ServerChannelDispatcher SERVER_CHANNEL_DISPATCHER = new ServerChannelDispatcher();
+    public static Boolean IS_STARTED = false;
 }

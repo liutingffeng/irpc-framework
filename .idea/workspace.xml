@@ -5,25 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e1d399f8-0cff-4403-a138-c92eaa1ceca5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/spi/ExtensionLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/spi/jdk/DefaultISpiTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/spi/jdk/ISpiTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/spi/jdk/TestSpiDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/META-INF/irpc/org.example.irpc.framework.core.common.router.IRouter" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/META-INF/irpc/org.example.irpc.framework.core.filter.IClientFilter" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/META-INF/irpc/org.example.irpc.framework.core.filter.IServerFilter" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/META-INF/irpc/org.example.irpc.framework.core.proxy.ProxyFactory" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/META-INF/irpc/org.example.irpc.framework.core.registy.RegistryService" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/META-INF/irpc/org.example.irpc.framework.core.serialize.SerializeFactory" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/META-INF/services/org.example.irpc.framework.core.spi.jdk.ISpiTest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/dispatcher/ServerChannelDispatcher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/ServerChannelReadData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonClientCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonClientCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/RpcReferenceWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/RpcReferenceWrapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonServerCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/cache/CommonServerCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ClientConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ZookeeperRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/registy/zookeeper/ZookeeperRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/PropertiesLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/config/ServerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/constants/RpcConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/common/constants/RpcConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/proxy/jdk/JDKClientInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/proxy/jdk/JDKClientInvocationHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/ServerHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/irpc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/irpc-framework-core/src/main/resources/irpc.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +36,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/ServerHandler.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -174,6 +172,10 @@
       <workItem from="1681879028592" duration="11179000" />
       <workItem from="1682049309513" duration="2071000" />
       <workItem from="1682733862529" duration="2095000" />
+      <workItem from="1683180418709" duration="202000" />
+      <workItem from="1683690081385" duration="2047000" />
+      <workItem from="1683771154083" duration="70000" />
+      <workItem from="1683796505228" duration="2014000" />
     </task>
     <servers />
   </component>
@@ -206,7 +208,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java</url>
-          <line>116</line>
+          <line>119</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -226,7 +228,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java</url>
-          <line>144</line>
+          <line>147</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -236,7 +238,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/client/Client.java</url>
-          <line>236</line>
+          <line>239</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -306,7 +308,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/ServerHandler.java</url>
-          <line>21</line>
+          <line>25</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -346,7 +348,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java</url>
-          <line>153</line>
+          <line>156</line>
           <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -366,7 +368,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/irpc-framework-core/src/main/java/org/example/irpc/framework/core/server/Server.java</url>
-          <line>80</line>
+          <line>83</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
