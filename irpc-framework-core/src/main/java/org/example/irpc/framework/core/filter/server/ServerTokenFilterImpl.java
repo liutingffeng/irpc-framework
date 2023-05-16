@@ -1,6 +1,7 @@
 package org.example.irpc.framework.core.filter.server;
 
 import org.example.irpc.framework.core.common.RpcInvocation;
+import org.example.irpc.framework.core.common.annotations.SPI;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
 import org.example.irpc.framework.core.filter.IServerFilter;
 import org.example.irpc.framework.core.server.ServiceWrapper;
@@ -11,6 +12,7 @@ import static org.example.irpc.framework.core.common.cache.CommonServerCache.PRO
  * @Author liutingfeng
  * @Date 2023/4/19 4:59 PM
  */
+@SPI("before")
 public class ServerTokenFilterImpl implements IServerFilter {
     @Override
     public void doFilter(RpcInvocation rpcInvocation) {

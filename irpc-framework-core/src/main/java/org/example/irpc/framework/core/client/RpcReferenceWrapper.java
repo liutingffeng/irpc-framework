@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date 2023/4/19 5:14 PM
  */
 public class RpcReferenceWrapper<T> {
+
     private Class<T> aimClass;
 
     private Map<String, Object> attatchments = new ConcurrentHashMap<>();
@@ -21,9 +22,33 @@ public class RpcReferenceWrapper<T> {
         this.aimClass = aimClass;
     }
 
+    /**
+     * 设置容错策略
+     *
+     * @param tolerant
+     */
+    public void setTolerant(String tolerant){
+        this.attatchments.put("tolerant",tolerant);
+    }
+
+    /**
+     * 失败重试次数
+     */
+    public int getRetry(){
+        if(attatchments.get("retry")==null){
+            return 0;
+        }else {
+            return (int) attatchments.get("retry");
+        }
+    }
+
+    public void setRetry(int retry){
+        this.attatchments.put("retry",retry);
+    }
+
     public boolean isAsync() {
         Object r = attatchments.get("async");
-        if (r == null) {
+        if (r == null || r.equals(false)) {
             return false;
         }
         return Boolean.valueOf(true);
@@ -72,5 +97,4 @@ public class RpcReferenceWrapper<T> {
     public void setAttatchments(Map<String, Object> attatchments) {
         this.attatchments = attatchments;
     }
-
 }

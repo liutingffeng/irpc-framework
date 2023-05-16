@@ -2,12 +2,15 @@ package org.example.irpc.framework.core.client;
 
 import com.alibaba.fastjson.JSON;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import org.example.irpc.framework.core.common.RpcDecoder;
 import org.example.irpc.framework.core.common.RpcEncoder;
 import org.example.irpc.framework.core.common.RpcInvocation;
@@ -78,6 +81,8 @@ public class Client {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
+                        ByteBuf delimiter = Unpooled.copiedBuffer(DEFAULT_DECODE_CHAR.getBytes());
+                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(clientConfig.getMaxServerRespDataSize(), delimiter));
                         //管道中初始化一些逻辑，这里包含了上边所说的编解码器和客户端响应类
                         ch.pipeline().addLast(new RpcEncoder());
                         ch.pipeline().addLast(new RpcDecoder());
@@ -236,6 +241,9 @@ public class Client {
         rpcReferenceWrapper.setServiceToken("token-a");
         rpcReferenceWrapper.setAsync(true);
         rpcReferenceWrapper.setTimeOut(1000);
+        //超时重试次数
+        rpcReferenceWrapper.setRetry(1);
+        rpcReferenceWrapper.setAsync(false);
         // 在初始化之前必须要设置对应的上下文
         DataService dataService = rpcReference.get(rpcReferenceWrapper);
         client.doSubscribeService(DataService.class);

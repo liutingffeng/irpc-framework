@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RpcInvocation implements Serializable {
 
+    private static final long serialVersionUID = -3611379458492006176L;
     //请求的目标方法，例如findUser
     private String targetMethod;
 
@@ -18,6 +19,19 @@ public class RpcInvocation implements Serializable {
 
     //接口响应的数据塞入这个字段中（如果是异步调用或者void类型，这里就为空）
     private Object response;
+
+    //主要用于记录服务端抛出的异常信息
+    private Throwable e;
+
+    private int retry;
+
+    public int getRetry() {
+        return retry;
+    }
+
+    public void setRetry(int retry) {
+        this.retry = retry;
+    }
 
     private Map<String, Object> attachments = new ConcurrentHashMap<>();
 
@@ -67,5 +81,13 @@ public class RpcInvocation implements Serializable {
 
     public void setResponse(Object response) {
         this.response = response;
+    }
+
+    public Throwable getE() {
+        return e;
+    }
+
+    public void setE(Throwable e) {
+        this.e = e;
     }
 }

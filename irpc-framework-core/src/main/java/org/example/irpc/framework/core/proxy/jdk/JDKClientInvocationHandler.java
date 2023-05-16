@@ -28,6 +28,7 @@ public class JDKClientInvocationHandler implements InvocationHandler {
         rpcInvocation.setTargetServiceName(rpcReferenceWrapper.getAimClass().getName());
         rpcInvocation.setUuid(UUID.randomUUID().toString());
         rpcInvocation.setAttachments(rpcReferenceWrapper.getAttatchments());
+        rpcInvocation.setRetry(rpcReferenceWrapper.getRetry());
         // 这里就是将请求的参数放入到发送队列中
         SEND_QUEUE.add(rpcInvocation);
         // 既然是异步请求，就没有必要再在RESP_MAP中判断是否有响应结果了
@@ -37,13 +38,37 @@ public class JDKClientInvocationHandler implements InvocationHandler {
         RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
         long beginTime = System.currentTimeMillis();
         //客户端请求超时的一个判断依据
-        while (System.currentTimeMillis() - beginTime < timeOut) {
+        int retryTimes = 0;
+        while (System.currentTimeMillis() - beginTime < timeOut || rpcInvocation.getRetry() > 0) {
             Object object = RESP_MAP.get(rpcInvocation.getUuid());
-            if (object instanceof RpcInvocation) {
-                return ((RpcInvocation)object).getResponse();
+            if (object != null && object instanceof RpcInvocation) {
+                RpcInvocation rpcInvocationResp = (RpcInvocation) object;
+                // 正常结果
+                if (rpcInvocationResp.getRetry() == 0 || (rpcInvocationResp.getRetry() != 0 && rpcInvocationResp.getE() == null)) {
+                    RESP_MAP.remove(rpcInvocation.getUuid());
+                    return rpcInvocationResp.getResponse();
+                } else if (rpcInvocationResp.getE() != null) {
+                    if (rpcInvocationResp.getRetry() == 0) {
+                        RESP_MAP.remove(rpcInvocation.getUuid());
+                        return rpcInvocationResp.getResponse();
+                    }
+                }
+            }
+            if (OBJECT.equals(object)) {
+                //如果是因为超时的情况，才会触发重试规则，否则重试机制不生效
+                if (System.currentTimeMillis() - beginTime > timeOut) {
+                    retryTimes++;
+                    //重新请求
+                    rpcInvocation.setResponse(null);
+                    //每次重试之后都会将retry值扣减1
+                    rpcInvocation.setRetry(rpcInvocation.getRetry() - 1);
+                    RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
+                    SEND_QUEUE.add(rpcInvocation);
+                }
             }
         }
         //修改异常信息
-        throw new TimeoutException("Wait for response from server on client " + timeOut + "ms,Service's name is " + rpcInvocation.getTargetServiceName() + "#" + rpcInvocation.getTargetMethod());
+        RESP_MAP.remove(rpcInvocation.getUuid());
+        throw new TimeoutException("Wait for response from server on client " + timeOut + "ms,retry times is " + retryTimes + ",service's name is " + rpcInvocation.getTargetServiceName() + "#" + rpcInvocation.getTargetMethod());
     }
 }

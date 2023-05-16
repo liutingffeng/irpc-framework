@@ -1,2 +1,4 @@
 serverLogFilterImpl=org.example.irpc.framework.core.filter.server.ServerLogFilterImpl
 serverTokenFilterImpl=org.example.irpc.framework.core.filter.server.ServerTokenFilterImpl
+serverServiceBeforeLimitFilterImpl=org.example.irpc.framework.core.filter.server.ServerServiceBeforeLimitFilterImpl
+serverServiceAfterLimitFilterImpl=org.example.irpc.framework.core.filter.server.ServerServiceAfterLimitFilterImpl

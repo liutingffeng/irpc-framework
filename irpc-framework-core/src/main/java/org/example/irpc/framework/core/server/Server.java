@@ -1,12 +1,15 @@
 package org.example.irpc.framework.core.server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import org.example.irpc.framework.core.common.RpcDecoder;
 import org.example.irpc.framework.core.common.RpcEncoder;
 import org.example.irpc.framework.core.common.config.PropertiesBootstrap;
@@ -14,6 +17,8 @@ import org.example.irpc.framework.core.common.config.ServerConfig;
 import org.example.irpc.framework.core.common.event.IRpcListenerLoader;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
 import org.example.irpc.framework.core.filter.IServerFilter;
+import org.example.irpc.framework.core.filter.server.ServerAfterFilterChain;
+import org.example.irpc.framework.core.filter.server.ServerBeforeFilterChain;
 import org.example.irpc.framework.core.filter.server.ServerFilterChain;
 import org.example.irpc.framework.core.registy.URL;
 import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
@@ -57,10 +62,15 @@ public class Server {
                 .option(ChannelOption.SO_RCVBUF, 16 * 1024)
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
+        //服务端采用单一长连接的模式，这里所支持的最大连接数应该和机器本身的性能有关
+        //连接防护的handler应该绑定在Main-Reactor上
+        bootstrap.handler(new MaxConnectionLimitHandler(serverConfig.getMaxConnections()));
         bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
                 System.out.println("初始化provider过程");
+                ByteBuf delimiter = Unpooled.copiedBuffer(DEFAULT_DECODE_CHAR.getBytes());
+                socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(serverConfig.getMaxServerRequestData(), delimiter));
                 socketChannel.pipeline().addLast(new RpcEncoder());
                 socketChannel.pipeline().addLast(new RpcDecoder());
                 socketChannel.pipeline().addLast(new ServerHandler());
@@ -93,6 +103,8 @@ public class Server {
         //过滤链技术初始化
         EXTENSION_LOADER.loadExtension(IServerFilter.class);
         LinkedHashMap<String, Class> iServerFilterClassMap = EXTENSION_LOADER_CLASS_CACHE.get(IServerFilter.class.getName());
+        ServerBeforeFilterChain serverBeforeFilterChain = new ServerBeforeFilterChain();
+        ServerAfterFilterChain serverAfterFilterChain = new ServerAfterFilterChain();
         ServerFilterChain serverFilterChain = new ServerFilterChain();
         for (String iServerFilterKey : iServerFilterClassMap.keySet()) {
             Class iServerFilterClass = iServerFilterClassMap.get(iServerFilterKey);
@@ -101,7 +113,8 @@ public class Server {
             }
             serverFilterChain.addServerFilter((IServerFilter) iServerFilterClass.newInstance());
         }
-        SERVER_FILTER_CHAIN = serverFilterChain;
+        SERVER_AFTER_FILTER_CHAIN = serverAfterFilterChain;
+        SERVER_BEFORE_FILTER_CHAIN = serverBeforeFilterChain;
     }
 
     /**

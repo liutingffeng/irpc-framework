@@ -24,6 +24,19 @@ public class ClientConfig {
      */
     private Integer timeOut;
 
+    /**
+     * 客户端最大响应数据体积
+     */
+    private Integer maxServerRespDataSize;
+
+    public Integer getMaxServerRespDataSize() {
+        return maxServerRespDataSize;
+    }
+
+    public void setMaxServerRespDataSize(Integer maxServerRespDataSize) {
+        this.maxServerRespDataSize = maxServerRespDataSize;
+    }
+
     public String getRegisterType() {
         return registerType;
     }

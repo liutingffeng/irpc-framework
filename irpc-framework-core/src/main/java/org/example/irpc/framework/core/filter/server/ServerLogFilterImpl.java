@@ -1,6 +1,7 @@
 package org.example.irpc.framework.core.filter.server;
 
 import org.example.irpc.framework.core.common.RpcInvocation;
+import org.example.irpc.framework.core.common.annotations.SPI;
 import org.example.irpc.framework.core.filter.IServerFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
  * @Author liutingfeng
  * @Date 2023/4/19 4:58 PM
  */
+@SPI("before")
 public class ServerLogFilterImpl implements IServerFilter {
     private static Logger logger = LoggerFactory.getLogger(ServerLogFilterImpl.class);
     @Override
