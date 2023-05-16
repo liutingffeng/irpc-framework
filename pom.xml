@@ -11,6 +11,9 @@
     <modules>
         <module>irpc-framework-core</module>
         <module>irpc-framework-interface</module>
+        <module>irpc-framework-spring-starter</module>
+        <module>irpc-framework-provider</module>
+        <module>irpc-framework-consumer</module>
     </modules>
 
     <properties>

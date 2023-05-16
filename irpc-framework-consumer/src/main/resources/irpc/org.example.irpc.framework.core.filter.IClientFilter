@@ -1,0 +1,1 @@
+#logFilterImpl=org.example.irpc.framework.consumer.spi.filter.LogFilterImpl

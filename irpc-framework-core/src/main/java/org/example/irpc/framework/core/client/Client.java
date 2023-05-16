@@ -24,9 +24,6 @@ import org.example.irpc.framework.core.common.router.RotateRouterImpl;
 import org.example.irpc.framework.core.common.utils.CommonUtils;
 import org.example.irpc.framework.core.filter.IClientFilter;
 import org.example.irpc.framework.core.filter.client.ClientFilterChain;
-import org.example.irpc.framework.core.filter.client.ClientLogFilterImpl;
-import org.example.irpc.framework.core.filter.client.DirectInvokeFilterImpl;
-import org.example.irpc.framework.core.filter.client.GroupFilterImpl;
 import org.example.irpc.framework.core.proxy.jdk.JDKProxyFactory;
 import org.example.irpc.framework.core.registy.RegistryService;
 import org.example.irpc.framework.core.registy.URL;
@@ -34,10 +31,6 @@ import org.example.irpc.framework.core.registy.zookeeper.AbstractRegister;
 import org.example.irpc.framework.core.registy.zookeeper.CuratorZookeeperClient;
 import org.example.irpc.framework.core.registy.zookeeper.ZookeeperRegister;
 import org.example.irpc.framework.core.serialize.SerializeFactory;
-import org.example.irpc.framework.core.serialize.fastjson.FastJsonSerializeFactory;
-import org.example.irpc.framework.core.serialize.hessian.HessianSerializeFactory;
-import org.example.irpc.framework.core.serialize.jdk.JdkSerializeFactory;
-import org.example.irpc.framework.core.serialize.kryo.KryoSerializeFactory;
 import org.example.irpc.framework.interfaces.DataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +67,7 @@ public class Client {
         this.clientConfig = clientConfig;
     }
 
-    private RpcReference initClientApplication() {
+    public RpcReference initClientApplication() {
         EventLoopGroup clientGroup = new NioEventLoopGroup();
         bootstrap.group(clientGroup)
                 .channel(NioSocketChannel.class)
@@ -160,7 +153,7 @@ public class Client {
     /**
      * 开启发送线程，专门从事将数据包发送给服务端，起到一个解耦的效果
      */
-    private void startClient() {
+    public void startClient() {
         Thread asyncSendJob = new Thread(new AsyncSendJob());
         asyncSendJob.start();
     }
